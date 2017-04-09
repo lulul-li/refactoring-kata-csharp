@@ -12,37 +12,15 @@ namespace RefactoringKata
             _orders.Add(order);
         }
 
-        public string GenerateContent()
+        public int GetOrdersCount()
         {
-            var sb = new StringBuilder("{\"orders\": [");
-
-            for (var i = 0; i < _orders.Count; i++)
-            {
-                var order = _orders[i];
-                sb.Append("{\"id\": ");
-                sb.Append(order.GetOrderId());
-                sb.Append(", \"products\": [");
-
-                for (var j = 0; j < order.GetProductsCount(); j++)
-                {
-                    sb.Append(order.GetProduct(j).GenerateProduct());
-                }
-                RemoveLastCharacter(sb, order.GetProductsCount());
-
-                sb.Append("]}, ");
-            }
-
-            RemoveLastCharacter(sb, _orders.Count);
-
-            return sb.Append("]}").ToString();
+            return _orders.Count;
         }
 
-        private void RemoveLastCharacter(StringBuilder sb, int ordersCount)
+        public Order GetOrder(int i)
         {
-            if (ordersCount > 0)
-            {
-                sb.Remove(sb.Length - 2, 2);
-            }
+            return _orders[i];
         }
+
     }
 }

@@ -7,17 +7,26 @@ namespace RefactoringKata
     public class OrdersWriter
     {
         private Orders _orders;
+        private readonly FormateCommon _formateCommon;
 
         public OrdersWriter(Orders orders)
         {
             _orders = orders;
+            _formateCommon = new FormateCommon();
         }
 
         public string GetContents()
         {
+            var sb = new StringBuilder("{\"orders\": [");
 
-            return _orders.GenerateContent();
+            for (var i = 0; i < _orders.GetOrdersCount(); i++)
+            {
+                _orders.GetOrder(i).GenerateOrder(sb);
+            }
+
+            _formateCommon.RemoveLastCharacter(sb, _orders.GetOrdersCount());
+
+            return sb.Append("]}").ToString();
         }
-
     }
 }
