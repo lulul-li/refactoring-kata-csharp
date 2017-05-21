@@ -5,12 +5,10 @@ namespace RefactoringKata
     public class OrdersWriter
     {
         private Orders _orders;
-        private readonly FormateCommon _formateCommon;
 
         public OrdersWriter(Orders orders)
         {
             _orders = orders;
-            _formateCommon = new FormateCommon();
         }
 
         public string GetContents()
@@ -19,10 +17,13 @@ namespace RefactoringKata
 
             for (var i = 0; i < _orders.GetOrdersCount(); i++)
             {
-                _orders.GetOrder(i).GenerateOrder(sb);
+                sb.Append(_orders.GetOrder(i).GenerateOrder());
             }
 
-            _formateCommon.RemoveLastCharacter(sb, _orders.GetOrdersCount());
+            if (_orders.GetOrdersCount() > 0)
+            {
+                JsonConvert.RemoveLastCharacter(sb);
+            }
 
             return sb.Append("]}").ToString();
         }

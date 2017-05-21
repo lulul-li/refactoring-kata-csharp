@@ -7,12 +7,10 @@ namespace RefactoringKata
     {
         private readonly int id;
         private readonly List<Product> _products = new List<Product>();
-        private readonly FormateCommon _formateCommon;
 
         public Order(int id)
         {
             this.id = id;
-            _formateCommon=new FormateCommon();
         }
 
         public int GetOrderId()
@@ -35,21 +33,29 @@ namespace RefactoringKata
             _products.Add(product);
         }
 
-        public void GenerateOrder(StringBuilder sb)
+        public string GenerateOrder()
         {
-            sb.Append("{\"id\": ");
-            sb.Append(GetOrderId());
-            sb.Append(", \"products\": [");
+            var sb = new StringBuilder();
+            sb.Append("{");
+            sb.Append(JsonConvert.JasonString("id", GetOrderId()));
+            sb.Append(GenerateProduct());
+            sb.Append("]}, ");
+            return sb.ToString();
+        }
 
+        private string GenerateProduct()
+        {
+            var sb = new StringBuilder();
+            sb.Append("\"products\": [");
             for (var j = 0; j < GetProductsCount(); j++)
             {
-                GetProduct(j).GenerateProduct(sb);
-                _formateCommon.RemoveLastCharacter(sb, GetProductsCount());
-                sb.Append("}, ");
+                sb.Append(GetProduct(j).GenerateProduct());
             }
-            _formateCommon.RemoveLastCharacter(sb, GetProductsCount());
-
-            sb.Append("]}, ");
+            if (GetProductsCount() > 0)
+            {
+               JsonConvert.RemoveLastCharacter(sb);
+            }
+            return sb.ToString();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace RefactoringKata
@@ -13,6 +12,7 @@ namespace RefactoringKata
         public Size Size { get; set; }
         public double Price { get; set; }
         public string Currency { get; set; }
+        private Dictionary<string, object> _productMappin;
 
         public Product(string code, Color color, Size size, double price, string currency)
         {
@@ -21,12 +21,7 @@ namespace RefactoringKata
             Size = size;
             Price = price;
             Currency = currency;
-        }
-
-
-        public void GenerateProduct(StringBuilder sb)
-        {
-            var productMappin = new Dictionary<string, object>()
+            _productMappin = new Dictionary<string, object>()
             {
                 {"code", Code},
                 {"color", Color },
@@ -36,13 +31,22 @@ namespace RefactoringKata
             };
             if (Size == Size.SIZE_NOT_APPLICABLE)
             {
-                productMappin.Remove("size");
+                _productMappin.Remove("size");
             }
-
-            sb.Append(productMappin.Aggregate("{",
-                (current, item) => current + string.Format("\"{0}\": {1}, ", item.Key, item.Value is double ? item.Value : "\"" + item.Value + "\"")));
-
         }
 
+
+        public string GenerateProduct()
+        {
+            var sb = new StringBuilder();
+            sb.Append("{");
+            foreach (var item in _productMappin)
+            {
+                sb.Append(JsonConvert.JasonString(item.Key, item.Value));
+            }
+            JsonConvert.RemoveLastCharacter(sb);
+            sb.Append("}, ");
+            return sb.ToString();
+        }
     }
 }

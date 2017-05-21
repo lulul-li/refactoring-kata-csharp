@@ -21,6 +21,5 @@ namespace RefactoringKata
         {
             return _orders[i];
         }
-
     }
 }
