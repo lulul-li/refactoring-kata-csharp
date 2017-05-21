@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace RefactoringKata
 {
     public class Order
     {
+        [JsonProperty("id")]
         private readonly int id;
-        private readonly List<Product> _products = new List<Product>();
+
+        [JsonProperty("products")]
+        private List<Product> _products = new List<Product>();
 
         public Order(int id)
         {
@@ -31,31 +35,6 @@ namespace RefactoringKata
         public void AddProduct(Product product)
         {
             _products.Add(product);
-        }
-
-        public string GenerateOrder()
-        {
-            var sb = new StringBuilder();
-            sb.Append("{");
-            sb.Append(JsonConvert.JasonString("id", GetOrderId()));
-            sb.Append(GenerateProduct());
-            sb.Append("]}, ");
-            return sb.ToString();
-        }
-
-        private string GenerateProduct()
-        {
-            var sb = new StringBuilder();
-            sb.Append("\"products\": [");
-            for (var j = 0; j < GetProductsCount(); j++)
-            {
-                sb.Append(GetProduct(j).GenerateProduct());
-            }
-            if (GetProductsCount() > 0)
-            {
-               JsonConvert.RemoveLastCharacter(sb);
-            }
-            return sb.ToString();
         }
     }
 }

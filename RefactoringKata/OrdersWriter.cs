@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Newtonsoft.Json;
 
 namespace RefactoringKata
 {
@@ -13,19 +14,7 @@ namespace RefactoringKata
 
         public string GetContents()
         {
-            var sb = new StringBuilder("{\"orders\": [");
-
-            for (var i = 0; i < _orders.GetOrdersCount(); i++)
-            {
-                sb.Append(_orders.GetOrder(i).GenerateOrder());
-            }
-
-            if (_orders.GetOrdersCount() > 0)
-            {
-                JsonConvert.RemoveLastCharacter(sb);
-            }
-
-            return sb.Append("]}").ToString();
+            return JsonConvert.SerializeObject(_orders);
         }
     }
 }

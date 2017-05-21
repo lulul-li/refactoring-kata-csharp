@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace RefactoringKata
 {
@@ -7,12 +9,29 @@ namespace RefactoringKata
     {
         public static int SIZE_NOT_APPLICABLE = -1;
 
+        [JsonProperty("code")]
         public string Code { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("color")]
         public Color Color { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("size")]
         public Size Size { get; set; }
+
+        [JsonProperty("price")]
         public double Price { get; set; }
+
+        [JsonProperty("currency")]
         public string Currency { get; set; }
+
         private Dictionary<string, object> _productMappin;
+
+        public bool ShouldSerializeSize()
+        {
+            return Size != Size.SIZE_NOT_APPLICABLE;
+        }
 
         public Product(string code, Color color, Size size, double price, string currency)
         {
@@ -21,32 +40,6 @@ namespace RefactoringKata
             Size = size;
             Price = price;
             Currency = currency;
-            _productMappin = new Dictionary<string, object>()
-            {
-                {"code", Code},
-                {"color", Color },
-                {"size", Size },
-                {"price", Price},
-                {"currency",Currency}
-            };
-            if (Size == Size.SIZE_NOT_APPLICABLE)
-            {
-                _productMappin.Remove("size");
-            }
-        }
-
-
-        public string GenerateProduct()
-        {
-            var sb = new StringBuilder();
-            sb.Append("{");
-            foreach (var item in _productMappin)
-            {
-                sb.Append(JsonConvert.JasonString(item.Key, item.Value));
-            }
-            JsonConvert.RemoveLastCharacter(sb);
-            sb.Append("}, ");
-            return sb.ToString();
         }
     }
 }

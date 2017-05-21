@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace RefactoringKata
 {
     public class Orders
     {
+        [JsonProperty("orders")]
         private List<Order> _orders = new List<Order>();
 
         public void AddOrder(Order order)

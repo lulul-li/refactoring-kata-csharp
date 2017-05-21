@@ -19,14 +19,14 @@ namespace RefactoringKata.UnitTests
         [Test]
         public void NoOrder()
         {
-            Assert.AreEqual("{\"orders\": []}", new OrdersWriter(new Orders()).GetContents());
+            Assert.AreEqual("{\"orders\":[]}", new OrdersWriter(new Orders()).GetContents());
         }
 
         [Test]
         public void OneOrder()
         {
-            var order111 = "{\"id\": 111, \"products\": []}";
-            Assert.AreEqual("{\"orders\": [" + order111 + "]}", new OrdersWriter(_orders).GetContents());
+            var order111 = "{\"id\":111,\"products\":[]}";
+            Assert.AreEqual("{\"orders\":[" + order111 + "]}", new OrdersWriter(_orders).GetContents());
         }
 
         [Test]
@@ -34,8 +34,8 @@ namespace RefactoringKata.UnitTests
         {
             _order111.AddProduct(new Product("Shirt", Color.blue, Size.M, 2.99, "TWD"));
 
-            var order111Json = JsonOrder111WithProduct("{\"code\": \"Shirt\", \"color\": \"blue\", \"size\": \"M\", \"price\": 2.99, \"currency\": \"TWD\"}");
-            Assert.AreEqual("{\"orders\": [" + order111Json + "]}", new OrdersWriter(_orders).GetContents());
+            var order111Json = JsonOrder111WithProduct("{\"code\":\"Shirt\",\"color\":\"blue\",\"size\":\"M\",\"price\":2.99,\"currency\":\"TWD\"}");
+            Assert.AreEqual("{\"orders\":[" + order111Json + "]}", new OrdersWriter(_orders).GetContents());
         }
 
         [Test]
@@ -43,8 +43,8 @@ namespace RefactoringKata.UnitTests
         {
             _order111.AddProduct(new Product("Pot", Color.red, Size.SIZE_NOT_APPLICABLE, 16.50, "SGD"));
 
-            var order111Json = JsonOrder111WithProduct("{\"code\": \"Pot\", \"color\": \"red\", \"price\": 16.5, \"currency\": \"SGD\"}");
-            Assert.AreEqual("{\"orders\": [" + order111Json + "]}", new OrdersWriter(_orders).GetContents());
+            var order111Json = JsonOrder111WithProduct("{\"code\":\"Pot\",\"color\":\"red\",\"price\":16.5,\"currency\":\"SGD\"}");
+            Assert.AreEqual("{\"orders\":[" + order111Json + "]}", new OrdersWriter(_orders).GetContents());
         }
 
         [Test]
@@ -53,13 +53,13 @@ namespace RefactoringKata.UnitTests
             _orders.AddOrder(new Order(222));
 
             var order111Json = JsonOrder111WithProduct("");
-            var order222Json = "{\"id\": 222, \"products\": []}";
-            Assert.AreEqual("{\"orders\": [" + order111Json + ", " + order222Json + "]}", new OrdersWriter(_orders).GetContents());
+            var order222Json = "{\"id\":222,\"products\":[]}";
+            Assert.AreEqual("{\"orders\":[" + order111Json + "," + order222Json + "]}", new OrdersWriter(_orders).GetContents());
         }
 
         private string JsonOrder111WithProduct(string productJson)
         {
-            return "{\"id\": 111, \"products\": [" + productJson + "]}";
+            return "{\"id\":111,\"products\":[" + productJson + "]}";
         }
     }
 }
